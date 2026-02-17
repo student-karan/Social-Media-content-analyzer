@@ -1,5 +1,5 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { generateText } from "ai";
+import { generateText, Output } from "ai";
 import * as zod from "zod";
 import "dotenv/config";
 import type { prompt } from "./types.js";
@@ -12,10 +12,10 @@ const instruction = "You are a social media expert that analyzes social media co
 
 async function fetchGeminiResponse(prompt: prompt) {
     try {
-        const { object } = await generateText({
+        const res = await generateText({
             model: google("gemini-1.5-flash"),
             system: instruction,
-            experimental_output: {
+            output: Output.object({
                 schema: zod.object({
                     engagement_score: zod.number(),
                     tone: zod.string(),
@@ -23,10 +23,10 @@ async function fetchGeminiResponse(prompt: prompt) {
                     tags: zod.array(zod.string()),
                     suggestions: zod.array(zod.string())
                 }),
-            },
+            }),
             prompt: JSON.stringify(prompt)
         });
-        return object;
+        return res.text
     } catch (err) {
         throw err;
     }
