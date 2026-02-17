@@ -11,7 +11,7 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.PORT;
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["http://localhost:5173","https://social-media-content-analyzer-eta-six.vercel.app"];
 
 app.use(cors({
     origin: allowedOrigins,

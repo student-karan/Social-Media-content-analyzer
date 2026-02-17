@@ -3,7 +3,6 @@ import fs from "fs";
 import { pdfToPng } from "pdf-to-png-converter";
 import Tesseract from "tesseract.js";
 import fetchGeminiResponse from "../lib/gemini.js";
-import { fileURLToPath } from "url";
 import path from "path";
 
 export const getAnalysis = async (req: Request, res: Response) => {
