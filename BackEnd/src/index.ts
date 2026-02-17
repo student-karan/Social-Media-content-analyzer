@@ -1,11 +1,9 @@
 import express from "express";
 import cors from "cors";
-import path, { dirname } from "path";
+import path from "path";
 import "dotenv/config";
 import { upload } from "./middleware/multer.js";
 import { getAnalysis } from "./controllers/analysis_controller.js";
-import { fileURLToPath } from "url";
-
 
 const app = express();
 const port = process.env.PORT;
