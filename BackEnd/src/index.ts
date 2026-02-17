@@ -1,13 +1,8 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
 import "dotenv/config";
 import { upload } from "./middleware/multer.js";
 import { getAnalysis } from "./controllers/analysis_controller.js";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT;
@@ -19,14 +14,6 @@ app.use(cors({
 }));
 
 app.post("/api/analysis", upload.single('file'), getAnalysis);
-
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.resolve(__dirname, "../FrontEnd/dist")));
-
-    app.get(/.*/, (req, res) => {
-        res.sendFile(path.resolve(__dirname, "../FrontEnd/dist/index.html"));
-    });
-}
 
 app.listen(port, () => {
     console.log("the server is listening for request at port number", port);
