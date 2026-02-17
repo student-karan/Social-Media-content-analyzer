@@ -6,8 +6,6 @@ import { upload } from "./middleware/multer.js";
 import { getAnalysis } from "./controllers/analysis_controller.js";
 import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.PORT;
@@ -21,10 +19,10 @@ app.use(cors({
 app.post("/api/analysis", upload.single('file'), getAnalysis);
 
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../FrontEnd/dist")));
+    app.use(express.static(path.resolve(__dirname, "../FrontEnd/dist")));
 
     app.get(/.*/, (req, res) => {
-        res.sendFile(path.join(__dirname, "../FrontEnd/dist/index.html"));
+        res.sendFile(path.resolve(__dirname, "../FrontEnd/dist/index.html"));
     });
 }
 
