@@ -13,8 +13,9 @@ const instruction = "You are a social media expert that analyzes social media co
 async function fetchGeminiResponse(prompt: prompt) {
     try {
         const res = await generateText({
-            model: google("gemini-1.5-flash"),
+            model: google("gemini-2.0-flash"),
             system: instruction,
+            abortSignal: AbortSignal.timeout(60000),
             output: Output.object({
                 schema: zod.object({
                     engagement_score: zod.number(),
@@ -26,7 +27,7 @@ async function fetchGeminiResponse(prompt: prompt) {
             }),
             prompt: JSON.stringify(prompt)
         });
-        return res.text
+        return res.output;
     } catch (err) {
         throw err;
     }

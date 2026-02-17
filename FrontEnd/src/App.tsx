@@ -5,8 +5,8 @@ import getAnalysis from "./actions/Analysis";
 
 const App = () => {
   const [File, setFile] = useState<File | null>(null);
-  const [Uploded, setUploaded] = useState<boolean>(false);
   const [report, setReport] = useState<Report>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   function handlefilechange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target?.files?.[0];
@@ -25,7 +25,6 @@ const App = () => {
       return;
     }
     setFile(file);
-    setUploaded(true);
     toast.success("File Uploaded");
   }
 
@@ -38,13 +37,15 @@ const App = () => {
     const formdata = new FormData();
     formdata.append("file", File);
     const toastid = toast.loading("Please wait, your file is being analyzed.");
+    setLoading(true);
     try {
       const res = (await getAnalysis(formdata)) as Report;
       setReport(res);
       toast.success("Your report is ready", { id: toastid });
     } catch (err) {
-      if (err instanceof Error) toast.error(err.message, { id: toastid });
-      else toast.error(String(err), { id: toastid });
+       toast.error((err as Error)?.message || "An error occurred during analysis.", { id: toastid })
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -75,7 +76,7 @@ const App = () => {
               htmlFor="File"
               className="w-full h-full flex flex-col justify-center cursor-pointer"
             >
-              {Uploded ? (
+              {File !== null ? (
                 <p className="text-green-700 text-center text-xl font-semibold">
                   {File?.name} Uploaded
                 </p>
@@ -94,6 +95,7 @@ const App = () => {
           </div>
           <button
             type="submit"
+            disabled={loading}
             className="bg-cyan-700 hover:bg-cyan-800 p-3 text-lg rounded-md transition-colors cursor-pointer"
           >
             Analyze Content

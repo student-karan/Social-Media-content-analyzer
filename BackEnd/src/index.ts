@@ -5,11 +5,17 @@ import { upload } from "./middleware/multer.js";
 import { getAnalysis } from "./controllers/analysis_controller.js";
 
 const app = express();
-const port = process.env.PORT;
-const allowedOrigins = ["http://localhost:5173","https://social-media-content-analyzer-eta-six.vercel.app"];
+const port = process.env.PORT || 4000;
+const allowedOrigins = ["http://localhost:5173", "https://social-media-content-analyzer-eta-six.vercel.app"];
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true
 }));
 
