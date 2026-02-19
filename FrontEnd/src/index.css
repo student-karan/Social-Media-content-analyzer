@@ -1,1 +1,79 @@
 @import "tailwindcss";
+
+@layer components {
+  .app-container {
+    @apply w-screen h-screen text-white bg-black/90 flex flex-col items-center p-4;
+  }
+
+  .app-title {
+    @apply md:text-3xl text-xl italic font-mono text-cyan-500;
+  }
+
+  .analysis-form {
+    @apply mt-10 flex flex-col items-center gap-6;
+  }
+
+  .dropzone {
+    @apply md:w-[400px] md:h-[250px] w-[300px] h-[200px] bg-white/90 rounded-md flex justify-center items-center cursor-pointer hover:bg-white transition-colors;
+  }
+
+  .dropzone-label {
+    @apply w-full h-full flex flex-col justify-center cursor-pointer;
+  }
+
+  .file-uploaded-status {
+    @apply text-green-700 text-center text-xl font-semibold;
+  }
+
+  .upload-prompt {
+    @apply text-center text-black;
+  }
+
+  .upload-prompt-title {
+    @apply text-amber-800 text-xl;
+  }
+
+  .upload-prompt-subtitle {
+    @apply text-gray-500 text-sm mt-2;
+  }
+
+  .analyze-button {
+    @apply bg-cyan-700 hover:bg-cyan-800 p-3 text-lg rounded-md transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .report-card {
+    @apply mt-10 p-6 bg-white/10 rounded-lg w-full max-w-2xl border border-cyan-500/30;
+  }
+
+  .report-header {
+    @apply flex justify-between items-center mb-4;
+  }
+
+  .report-title {
+    @apply text-2xl font-bold text-cyan-400;
+  }
+
+  .engagement-score {
+    @apply text-4xl font-mono text-cyan-500;
+  }
+
+  .report-tone {
+    @apply mb-2;
+  }
+
+  .report-platform {
+    @apply mb-4 text-sm text-gray-400;
+  }
+
+  .tags-container {
+    @apply flex gap-2 mb-4;
+  }
+
+  .tag {
+    @apply px-2 py-1 bg-cyan-900 rounded text-xs;
+  }
+
+  .suggestions-list {
+    @apply list-disc ml-5 space-y-2;
+  }
+}

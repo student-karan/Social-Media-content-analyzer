@@ -43,7 +43,11 @@ const App = () => {
       setReport(res);
       toast.success("Your report is ready", { id: toastid });
     } catch (err) {
-       toast.error((err as Error)?.message || "An error occurred during analysis.", { id: toastid })
+      if (err instanceof Error) {
+        toast.error(err.message, { id: toastid });
+      } else {
+        toast.error("An unknown error occurred.", { id: toastid });
+      }
     } finally {
       setLoading(false);
     }
@@ -59,33 +63,33 @@ const App = () => {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
-      <div className="w-screen h-screen text-white bg-black/90 flex flex-col items-center p-4">
-        <h1 className="md:text-3xl text-xl italic font-mono text-cyan-500">
+      <div className="app-container">
+        <h1 className="app-title">
           Social Media Content Analyzer
         </h1>
         <form
-          className="mt-10 flex flex-col items-center gap-6"
+          className="analysis-form"
           onSubmit={handleSubmit}
         >
           <div
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
-            className="md:w-[400px] md:h-[250px] w-[300px] h-[200px] bg-white/90 rounded-md flex justify-center items-center cursor-pointer hover:bg-white transition-colors"
+            className="dropzone"
           >
             <label
               htmlFor="File"
-              className="w-full h-full flex flex-col justify-center cursor-pointer"
+              className="dropzone-label"
             >
               {File !== null ? (
-                <p className="text-green-700 text-center text-xl font-semibold">
+                <p className="file-uploaded-status">
                   {File?.name} Uploaded
                 </p>
               ) : (
-                <div className="text-center text-black">
-                  <p className="text-amber-800 text-xl">
+                <div className="upload-prompt">
+                  <p className="upload-prompt-title">
                     Select Image/PDF for Analysis
                   </p>
-                  <p className="text-gray-500 text-sm mt-2">
+                  <p className="upload-prompt-subtitle">
                     or drag and drop here
                   </p>
                 </div>
@@ -96,41 +100,41 @@ const App = () => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-cyan-700 hover:bg-cyan-800 p-3 text-lg rounded-md transition-colors cursor-pointer"
+            className="analyze-button"
           >
             Analyze Content
           </button>
         </form>
         {/* RENDERING THE REPOR */}
         {report && (
-          <div className="mt-10 p-6 bg-white/10 rounded-lg w-full max-w-2xl border border-cyan-500/30">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-cyan-400">
+          <div className="report-card">
+            <div className="report-header">
+              <h2 className="report-title">
                 Analysis Report
               </h2>
-              <span className="text-4xl font-mono text-cyan-500">
+              <span className="engagement-score">
                 {report.engagement_score}%
               </span>
             </div>
-            <p className="mb-2">
+            <p className="report-tone">
               <strong>Tone:</strong> {report.tone}
             </p>
-            <p className="mb-4 text-sm text-gray-400">
+            <p className="report-platform">
               Best for: {report.platform_fit}
             </p>
 
-            <div className="flex gap-2 mb-4">
+            <div className="tags-container">
               {report.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-1 bg-cyan-900 rounded text-xs"
+                  className="tag"
                 >
                   #{tag}
                 </span>
               ))}
             </div>
 
-            <ul className="list-disc ml-5 space-y-2">
+            <ul className="suggestions-list">
               {report.suggestions.map((s, i) => (
                 <li key={i}>{s}</li>
               ))}
